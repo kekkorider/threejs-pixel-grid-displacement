@@ -1,6 +1,7 @@
 varying vec2 vUv;
 
 uniform sampler2D t_Texture;
+uniform sampler2D t_Grid;
 uniform vec2 u_ContainerResolution;
 uniform float u_Time;
 
@@ -29,7 +30,8 @@ void main() {
   vec2 coverUV = coverUvs(vec2(float(tex0Size.x), float(tex0Size.y)), u_ContainerResolution);
   vec4 tex0 = texture2D(t_Texture, coverUV);
 
-  vec3 color = tex0.rgb;
+  vec4 displacement = texture2D(t_Grid, coverUV);
+  displacement.a = 1.0;
 
-  gl_FragColor = vec4(color, 1.0);
+  gl_FragColor = displacement;
 }

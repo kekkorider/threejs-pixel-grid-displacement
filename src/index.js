@@ -11,6 +11,8 @@ import {
 import { GridMaterial } from './materials/GridMaterial'
 import { textureLoader } from './loaders'
 
+import { GPGPU } from './GPGPU'
+
 class App {
   #resizeCallback = () => this.#onResize()
 
@@ -30,6 +32,8 @@ class App {
     this.#createPlane()
     const img = await textureLoader.load('/dim-gunger-MSrN0wXcN8A-unsplash.jpg')
     this.plane.material.uniforms.t_Texture.value = img
+
+    this.gpgpu = new GPGPU({ size: 80, renderer: this.renderer })
 
     this.#createClock()
     this.#addListeners()
@@ -63,6 +67,9 @@ class App {
   #update() {
     const elapsed = this.clock.getElapsedTime()
 
+    this.gpgpu.render()
+    this.plane.material.uniforms.t_Grid.value = this.gpgpu.getTexture()
+
     this.plane.material.uniforms.u_Time.value = elapsed
   }
 
@@ -81,7 +88,7 @@ class App {
 
   #createRenderer() {
     const params = {
-      alpha: true,
+      alpha: false,
       antialias: window.devicePixelRatio === 1
     }
 

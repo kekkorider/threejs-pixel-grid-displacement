@@ -12,5 +12,6 @@ export const GridMaterial = new ShaderMaterial({
 
     u_ContainerResolution: new Uniform(new Vector2(window.innerWidth, window.innerHeight)),
     u_Time: new Uniform(0),
+    t_Grid: new Uniform(new Vector4()),
   }
 })
