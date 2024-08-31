@@ -14,6 +14,9 @@ importers:
       cannon-es-debugger:
         specifier: ^1.0.0
         version: 1.0.0(cannon-es@0.20.0)(three@0.167.1)
+      gsap:
+        specifier: ^3.12.5
+        version: 3.12.5
       stats.js:
         specifier: ^0.17.0
         version: 0.17.0
@@ -307,6 +310,9 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
+  gsap@3.12.5:
+    resolution: {integrity: sha512-srBfnk4n+Oe/ZnMIOXt3gT605BX9x5+rh/prT2F1SsNJsU1XuMiP0E2aptW481OnonOGACZWBqseH5Z7csHxhQ==}
+
   meshoptimizer@0.18.1:
     resolution: {integrity: sha512-ZhoIoL7TNV4s5B6+rx5mC//fw8/POGyNxS/DZyCJeiZ12ScLfVwRE/GfsxwiTkMYYD5DmK2/JXnEVXqL4rF+Sw==}
 
@@ -563,6 +569,8 @@ snapshots:
 
   fsevents@2.3.3:
     optional: true
+
+  gsap@3.12.5: {}
 
   meshoptimizer@0.18.1: {}
 

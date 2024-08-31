@@ -6,12 +6,17 @@ import {
   Mesh,
   Clock,
   Vector2,
+  Raycaster
 } from 'three'
+import { gsap } from 'gsap'
+import { Observer } from 'gsap/Observer'
 
 import { GridMaterial } from './materials/GridMaterial'
 import { textureLoader } from './loaders'
 
 import { GPGPU } from './GPGPU'
+
+gsap.registerPlugin(Observer)
 
 class App {
   #resizeCallback = () => this.#onResize()
@@ -33,7 +38,10 @@ class App {
     const img = await textureLoader.load('/dim-gunger-MSrN0wXcN8A-unsplash.jpg')
     this.plane.material.uniforms.t_Texture.value = img
 
-    this.gpgpu = new GPGPU({ size: 80, renderer: this.renderer })
+    this.gpgpu = new GPGPU({ size: 27, renderer: this.renderer })
+
+    this.#createRaycaster()
+    this.#createMouseObserver()
 
     this.#createClock()
     this.#addListeners()
@@ -69,8 +77,6 @@ class App {
 
     this.gpgpu.render()
     this.plane.material.uniforms.t_Grid.value = this.gpgpu.getTexture()
-
-    this.plane.material.uniforms.u_Time.value = elapsed
   }
 
   #render() {
@@ -100,6 +106,32 @@ class App {
     this.renderer.setPixelRatio(Math.min(1.5, window.devicePixelRatio))
     this.renderer.setClearColor(0x121212)
     this.renderer.physicallyCorrectLights = true
+  }
+
+  #createRaycaster() {
+    this.raycaster = new Raycaster()
+  }
+
+  #createMouseObserver() {
+    this.mouse = new Vector2()
+
+    this.mouseObserver = Observer.create({
+      target: this.container,
+      type: 'pointer',
+      onMove: (event) => {
+        this.mouse.x = (event.x / this.screen.x) * 2 - 1
+        this.mouse.y = -(event.y / this.screen.y) * 2 + 1
+
+        this.raycaster.setFromCamera(this.mouse, this.camera)
+
+        const intersects = this.raycaster.intersectObject(this.scene)
+        const target = intersects?.[0] ?? null
+
+        if (!!!target) return
+
+        this.gpgpu.updateMouse(target.uv)
+      }
+    })
   }
 
   #createPlane() {

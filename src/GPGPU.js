@@ -32,10 +32,22 @@ export class GPGPU {
     this.variable.material.uniforms.u_GridSize = new Uniform(this.size)
     this.variable.material.uniforms.u_Mouse = new Uniform(new Vector2())
     this.variable.material.uniforms.u_DeltaMouse = new Uniform(new Vector2())
+    this.variable.material.uniforms.u_MouseMove = new Uniform()
   }
 
   setRendererDependencies() {
     this.gpgpuRenderer.setVariableDependencies(this.variable, [this.variable])
+  }
+
+  updateMouse(uv) {
+    const current = this.variable.material.uniforms.u_Mouse.value
+
+    current.subVectors(uv, current)
+    current.multiplyScalar(80)
+
+    this.variable.material.uniforms.u_DeltaMouse.value = current
+    this.variable.material.uniforms.u_Mouse.value = uv
+    this.variable.material.uniforms.u_MouseMove.value = 1
   }
 
   getTexture() {
@@ -43,6 +55,11 @@ export class GPGPU {
   }
 
   render() {
+    this.variable.material.uniforms.u_MouseMove.value *= 0.95
+    this.variable.material.uniforms.u_MouseMove.value = Math.floor(this.variable.material.uniforms.u_MouseMove.value * 256) / 256
+
+    this.variable.material.uniforms.u_DeltaMouse.value.multiplyScalar(0.965)
+
     this.gpgpuRenderer.compute()
   }
 }

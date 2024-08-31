@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   server: {
-    port: 1234
+    port: 8888
   },
   plugins: [
     glsl()
