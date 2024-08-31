@@ -38,7 +38,7 @@ class App {
     const img = await textureLoader.load('/dim-gunger-MSrN0wXcN8A-unsplash.jpg')
     this.plane.material.uniforms.t_Texture.value = img
 
-    this.gpgpu = new GPGPU({ size: 27, renderer: this.renderer })
+    this.gpgpu = new GPGPU({ size: 24, renderer: this.renderer })
 
     this.#createRaycaster()
     this.#createMouseObserver()
@@ -135,7 +135,7 @@ class App {
   }
 
   #createPlane() {
-    const geometry = new PlaneGeometry(1.9, 1.9)
+    const geometry = new PlaneGeometry(2, 2)
     this.plane = new Mesh(geometry, GridMaterial)
 
     this.scene.add(this.plane)
@@ -155,6 +155,8 @@ class App {
 
   #onResize() {
     this.screen.set(this.container.clientWidth, this.container.clientHeight)
+
+    this.plane.material.uniforms.u_ContainerResolution.value = this.screen.clone()
 
     this.camera.aspect = this.screen.x / this.screen.y
     this.camera.updateProjectionMatrix()

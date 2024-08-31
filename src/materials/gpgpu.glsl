@@ -11,7 +11,7 @@ void main() {
   color.r = 1.0;
 
   float dist = distance(uv, u_Mouse);
-  dist = 1.0 - smoothstep(0.0, 0.22, dist);
+  dist = smoothstep(0.22, 0., dist);
   color.rg += u_DeltaMouse * dist;
 
   color.rg *= RELAXATION;
